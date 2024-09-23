@@ -89,7 +89,7 @@ def remove_collaborator(collaborators, owner, repo):
             print(response.json())
 
 if __name__ == "__main__":
-    with open('/Users/viswanath/Desktop/IssueOps/invitations.csv', 'r') as file:
+    with open('invitations.csv', 'r') as file:
         reader = csv.reader(file)
         next(reader)  # Skip the header row if it exists
         data = list(reader)

@@ -5,6 +5,13 @@ on:
     types: [created]
 
 jobs:
+  test-trigger:
+    if: contains(github.event.comment.body, '/issueops')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Echo test
+      run: echo "Workflow triggered by comment:${{github.event.comment.body}}"
+
   process-command:
     if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
