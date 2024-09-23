@@ -4,7 +4,10 @@ import os
 
 # Define the required variables
 GITHUB_API_URL = "https://api.github.com"
-TOKEN = "os.getenv('GITHUB_TOKEN')"
+TOKEN = os.getenv('GITHUB_TOKEN')
+if not TOKEN:
+    print("Error: GitHub token not found. Please set the GITHUB_TOKEN environment variable.")
+    exit(1)
 
 def get_pending_invitations(owner, repo):
     url = f"{GITHUB_API_URL}/repos/{owner}/{repo}/invitations"
