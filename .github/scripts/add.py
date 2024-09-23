@@ -30,9 +30,9 @@ def add_collaborator_to_org(org_name, user_id, permission, token):
         "invitee_id": user_id,
         "role": permission
     }
-    
+
     response = requests.post(url, headers=headers, json=data)
-    
+
     if response.status_code == 201:
         print(f"Successfully invited user with ID {user_id} to organization {org_name} with {permission} permission")
     elif response.status_code == 422 and "already_invited" in response.text:
@@ -46,7 +46,7 @@ def add_collaborator_to_org(org_name, user_id, permission, token):
 def process_github_data(file_path, token):
     organizations = []
     collaborators = []
-    
+
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -76,5 +76,11 @@ if __name__ == "__main__":
         print("Error: GitHub token not found. Please set the GITHUB_TOKEN environment variable.")
         exit(1)
 
-    file_path = 'collaborator.csv'  # Update this path if your CSV is located elsewhere
+    # Set default CSV path
+    file_path = os.getenv('COLLABORATOR_CSV_PATH', 'collaborator.csv')
+
+    if not os.path.exists(file_path):
+        print(f"Error: CSV file not found at {file_path}")
+        exit(1)
+
     process_github_data(file_path, token)

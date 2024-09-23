@@ -1,6 +1,10 @@
 import requests
 import csv
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Define the required variables
 GITHUB_API_URL = "https://api.github.com"
@@ -9,13 +13,16 @@ if not TOKEN:
     print("Error: GitHub token not found. Please set the GITHUB_TOKEN environment variable.")
     exit(1)
 
+# Set default CSV path
+csv_file_path = os.getenv('INVITATIONS_CSV_PATH', 'invitations.csv')
+
 def get_pending_invitations(owner, repo):
     url = f"{GITHUB_API_URL}/repos/{owner}/{repo}/invitations"
     headers = {
         "Authorization": f"token {TOKEN}",
         "Accept": "application/vnd.github.v3+json"
     }
-    
+
     pending_usernames = set()
     page = 1
     per_page = 100
@@ -23,7 +30,7 @@ def get_pending_invitations(owner, repo):
     while True:
         params = {'page': page, 'per_page': per_page}
         response = requests.get(url, headers=headers, params=params)
-        
+
         if response.status_code == 200:
             invitations = response.json()
             if not invitations:
@@ -38,12 +45,12 @@ def get_pending_invitations(owner, repo):
             print(f"Failed to fetch invitations. Status code: {response.status_code}")
             print(response.json())
             break
-    
+
     return pending_usernames
 
 def add_collaborators(collaborators, owner, repo):
     pending_usernames = get_pending_invitations(owner, repo)
-    
+
     headers = {
         "Authorization": f"token {TOKEN}",
         "Accept": "application/vnd.github.v3+json"
@@ -53,15 +60,15 @@ def add_collaborators(collaborators, owner, repo):
         if collaborator in pending_usernames:
             print(f"Collaborator '{collaborator}' has a pending invitation for {owner}/{repo}, treated as added.")
             continue
-        
+
         url = f"{GITHUB_API_URL}/repos/{owner}/{repo}/collaborators/{collaborator}"
-        
+
         data = {
             "permission": "admin"  # Options: pull, push, admin, maintain, triage
         }
-        
+
         response = requests.put(url, json=data, headers=headers)
-        
+
         if response.status_code == 201:
             print(f"Collaborator '{collaborator}' invited to {owner}/{repo} successfully.")
         elif response.status_code == 204:
@@ -77,9 +84,9 @@ def remove_collaborator(collaborators, owner, repo):
             "Authorization": f"token {TOKEN}",
             "Accept": "application/vnd.github.v3+json"
         }
-        
+
         response = requests.delete(url, headers=headers)
-        
+
         if response.status_code == 204:
             print(f"Collaborator '{collaborator}' removed successfully from {owner}/{repo}.")
         elif response.status_code == 404:
@@ -89,7 +96,13 @@ def remove_collaborator(collaborators, owner, repo):
             print(response.json())
 
 if __name__ == "__main__":
-    with open('invitations.csv', 'r') as file:
+    # Ensure file path is correct
+    csv_file_path = os.getenv('INVITATIONS_CSV_PATH', 'invitations.csv')
+    if not os.path.exists(csv_file_path):
+        print(f"Error: CSV file not found at {csv_file_path}")
+        exit(1)
+
+    with open(csv_file_path, 'r') as file:
         reader = csv.reader(file)
         next(reader)  # Skip the header row if it exists
         data = list(reader)

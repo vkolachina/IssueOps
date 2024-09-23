@@ -1,4 +1,4 @@
-name: IssueOps
+name: Simple Test
 
 on:
   issue_comment:
@@ -35,3 +35,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COLLABORATOR_CSV_PATH: 'scripts/collaborator.csv'  # Set the CSV path as environment variable
         run: python scripts/add.py
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print comment info
+      run: |
+        echo "Issue comment event received"
+        echo "Comment body: ${{ github.event.comment.body }}"
