@@ -9,6 +9,8 @@ jobs:
     if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
     steps:
+      - name: Set up debug logging
+        run: echo "::set-env name=ACTIONS_STEP_DEBUG::true"
       - name: Checkout code
         uses: actions/checkout@v2
 
