@@ -1,49 +1,14 @@
-name: IssueOps
+name: Simple Test
 
 on:
   issue_comment:
     types: [created]
 
-permissions:
-  contents: read
-  issues: write    
-
 jobs:
-  process-command:
+  test-job:
     runs-on: ubuntu-latest
-    if: contains(github.event.comment.body, '/issueops')
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
+    - name: Print comment info
       run: |
-        python -m pip install --upgrade pip
-        pip install requests python-dotenv
-
-    - name: Run add_repo script
-      if: contains(github.event.comment.body, '/issueops add_repo')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo "Running add_repo script"
-        python scripts/add_repo.py
-
-    - name: Run add script
-      if: contains(github.event.comment.body, '/issueops add')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo "Running add script"
-        python scripts/add.py
-
-    - name: Debug Information
-      run: |
-        echo "Event: ${{ github.event_name }}"
-        echo "Action: ${{ github.event.action }}"
+        echo "Issue comment event received"
         echo "Comment body: ${{ github.event.comment.body }}"
