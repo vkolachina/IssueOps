@@ -4,17 +4,14 @@ on:
   issue_comment:
     types: [created]
 
-jobs:
-  test-trigger:
-    if: contains(github.event.comment.body, '/issueops')
-    runs-on: ubuntu-latest
-    steps:
-    - name: Echo test
-      run: echo "Workflow triggered by comment:${{github.event.comment.body}}"
+permissions:
+  contents: read
+  issues: write    
 
+jobs:
   process-command:
-    if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '/issueops')
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -33,10 +30,20 @@ jobs:
       if: contains(github.event.comment.body, '/issueops add_repo')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python scripts/add_repo.py
+      run: |
+        echo "Running add_repo script"
+        python scripts/add_repo.py
 
     - name: Run add script
       if: contains(github.event.comment.body, '/issueops add')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python scripts/add.py
+      run: |
+        echo "Running add script"
+        python scripts/add.py
+
+    - name: Debug Information
+      run: |
+        echo "Event: ${{ github.event_name }}"
+        echo "Action: ${{ github.event.action }}"
+        echo "Comment body: ${{ github.event.comment.body }}"
