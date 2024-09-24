@@ -1,4 +1,4 @@
-name: IssueOps
+name: IssueOps 
 description: Use this template for IssueOps commands to add users to repositories or organizations
 title: " Add User Request"
 labels: [issueops]
@@ -43,4 +43,4 @@ body:
         - For adding a repository collaborator: `/issueops add_repo`
         - For adding an organization member: `/issueops add`
 
-        Make sure to use the exact command as a separate comment after the issue is created.
+        Make sure to use the exact command as the separate comment after the issue is created.
