@@ -1,6 +1,7 @@
 name: IssueOps - Add to Repository
 
-on:
+on: 
+  push: {}
   issue_comment:
     types: [created]
 
