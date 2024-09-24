@@ -1,8 +1,14 @@
 name: IssueOps
 
-on:
+on: 
   issue_comment:
     types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
 
 jobs:
   process-command:
