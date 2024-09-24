@@ -1,7 +1,6 @@
-name: IssueOps - Add to Repository
+name: IssueOps
 
 on: 
-  push: {}
   issue_comment:
     types: [created]
 
@@ -10,9 +9,10 @@ permissions:
   issues: write
   actions: write
 
+
 jobs:
-  process-add-repo-command:
-    #if: contains(github.event.comment.body, '/issueops add_repo')
+  process-command:
+    if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -29,10 +29,19 @@ jobs:
         pip install requests python-dotenv
 
     - name: Run add_repo script
+      if: contains(github.event.comment.body, '/issueops add_repo')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INVITATIONS_CSV_PATH: ${{ secrets.INVITATIONS_CSV_PATH }}
+        INVITATIONS_CSV_PATH: ${{ secrets.INVITATIONS_CSV_PATH || 'default/path/to/invitations.csv' }}
       run: python scripts/add_repo.py
+
+    - name: Run add script
+      if: contains(github.event.comment.body, '/issueops add')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH || 'default/path/to/collaborators.csv' }}
+        
+      run: python scripts/add.py
 
     - name: Dump GitHub context
       env:
