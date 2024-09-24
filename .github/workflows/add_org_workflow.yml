@@ -1,6 +1,6 @@
-name: IssueOps
+name: IssueOps - Add to Organization
 
-on: 
+on:
   issue_comment:
     types: [created]
 
@@ -9,10 +9,9 @@ permissions:
   issues: write
   actions: write
 
-
 jobs:
-  process-command:
-    if: contains(github.event.comment.body, '/issueops')
+  process-add-org-command:
+    if: contains(github.event.comment.body, '/issueops add')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -28,19 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests python-dotenv
 
-    - name: Run add_repo script
-      if: contains(github.event.comment.body, '/issueops add_repo')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INVITATIONS_CSV_PATH: ${{ secrets.INVITATIONS_CSV_PATH }}
-      run: python scripts/add_repo.py
-
     - name: Run add script
-      if: contains(github.event.comment.body, '/issueops add')
+      if: ${{ env.COLLABORATORS_CSV_PATH != '' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH || 'default/path/to/collaborators.csv' }}
-        
+        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH }}
       run: python scripts/add.py
 
     - name: Dump GitHub context
