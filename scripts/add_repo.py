@@ -48,26 +48,6 @@ def get_pending_invitations(owner, repo):
 
     return pending_usernames
 
-def check_token_scope(token):
-    url = f"https://api.github.com/user"
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github.v3+json"
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        scopes = response.headers.get('x-oauth-scopes', '')
-        print(f"Token scopes: {scopes}")
-        if 'admin:org' not in scopes or 'repo' not in scopes:
-            print("Error: Token does not have the required 'admin:org' or 'repo' scopes.")
-            exit(1)
-    else:
-        print(f"Failed to check token scopes. Status code: {response.status_code}")
-        exit(1)
-
-check_token_scope(TOKEN)
-
-
 def add_collaborators(collaborators, owner, repo):
     pending_usernames = get_pending_invitations(owner, repo)
 
