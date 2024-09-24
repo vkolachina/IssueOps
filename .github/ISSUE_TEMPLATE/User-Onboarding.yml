@@ -13,6 +13,18 @@ body:
 
         Please describe your request here. Do not add any commands in this description.
 
+  - type: textarea
+    id: request-description
+    attributes:
+      label: Request Description
+      description: Please provide more details about your request.
+      placeholder: Enter your request details here...
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
         ---
 
         **Important:** After creating this issue, add a new comment with one of these commands:
