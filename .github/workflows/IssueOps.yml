@@ -1,9 +1,6 @@
 name: IssueOps
 
 on: 
-  push:
-    branches:
-      - main, Develop
   issue_comment:
     types: [created]
 
@@ -42,3 +39,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: python scripts/add.py
+
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
