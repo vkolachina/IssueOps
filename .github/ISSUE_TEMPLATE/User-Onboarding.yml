@@ -6,7 +6,6 @@ assignees:
   - KolachinaV
 body:
   - type: markdown
-    content: |
       ## IssueOps Request
 
       Please describe your request here. Do not add any commands in this description.
