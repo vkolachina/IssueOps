@@ -1,6 +1,7 @@
 name: IssueOps - Add to Organization
 
-on:
+on: 
+  push: {}
   issue_comment:
     types: [created]
 
