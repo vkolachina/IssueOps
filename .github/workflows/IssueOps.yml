@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   process-command:
-    if: contains(github.event.comment.body, '/issueops')
+    #if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
