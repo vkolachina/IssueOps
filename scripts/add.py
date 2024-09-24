@@ -49,6 +49,12 @@ def process_github_data(file_path, token):
 
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
+        
+        # Ensure headers match what we're expecting
+        if 'type' not in reader.fieldnames or 'name' not in reader.fieldnames or 'username' not in reader.fieldnames or 'permission' not in reader.fieldnames:
+            print("Error: CSV file headers are incorrect. Expected headers: 'type', 'name', 'username', 'permission'.")
+            exit(1)
+        
         for row in reader:
             if row['type'] == 'organization':
                 organizations.append(row['name'])
@@ -63,15 +69,14 @@ def process_github_data(file_path, token):
         for collab in collaborators:
             username = collab['username']
             permission = collab['permission']
+            if not username or not permission:
+                print(f"Skipping empty or invalid collaborator entry: {collab}")
+                continue
             user_id = get_user_id(username, token)
             if user_id:
                 add_collaborator_to_org(org, user_id, permission, token)
             else:
                 print(f"Skipping invitation for {username} due to failure in getting user ID")
-
-import os
-
-# ... (rest of the imports)
 
 if __name__ == "__main__":
     # Get the token from environment variable
