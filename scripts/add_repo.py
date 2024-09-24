@@ -139,6 +139,6 @@ if __name__ == "__main__":
         print("Error: Owner and Repository must be specified in the CSV file.")
     else:
         # Call the function to add all collaborators
-        #add_collaborators(COLLABORATORS, OWNER, REPO)
+        add_collaborators(COLLABORATORS, OWNER, REPO)
         # Uncomment the next line if you want to remove collaborators instead
-        remove_collaborator(COLLABORATORS, OWNER, REPO)
+        #remove_collaborator(COLLABORATORS, OWNER, REPO)
