@@ -43,12 +43,12 @@ jobs:
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COLLABORATORS_CSV_PATH: ${{ github.workspace }}/collaborators.csv
+        COLLABORATORS_CSV_PATH: ${{ github.workspace }}/collaborator.csv
       run: |
         if [ -f "$COLLABORATORS_CSV_PATH" ]; then
           python scripts/add.py
         else
-          echo "Error: collaborators.csv not found at $COLLABORATORS_CSV_PATH"
+          echo "Error: collaborator.csv not found at $COLLABORATORS_CSV_PATH"
           exit 1
         fi
 
