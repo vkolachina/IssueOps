@@ -44,3 +44,6 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
+
+    - name: Debug Comment Body
+      run: echo "${{ github.event.comment.body }}"
