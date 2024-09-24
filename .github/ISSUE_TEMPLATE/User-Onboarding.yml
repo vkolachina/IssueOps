@@ -1,10 +1,9 @@
 name: IssueOps Request
-title: "[IssueOps] files will be added"
+title: "This is a sample body for IssueOps Request"
 labels: issueops
 assignees: 'viswa9357, KolachinaV'
 body:
   - type: markdown
-    raw: |
       ## IssueOps Request
 
       Please describe your request here. Do not add any commands in this description.
