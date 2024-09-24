@@ -69,6 +69,10 @@ def process_github_data(file_path, token):
             else:
                 print(f"Skipping invitation for {username} due to failure in getting user ID")
 
+import os
+
+# ... (rest of the imports)
+
 if __name__ == "__main__":
     # Get the token from environment variable
     token = os.getenv('GITHUB_TOKEN')
@@ -77,9 +81,11 @@ if __name__ == "__main__":
         exit(1)
 
     # Set default CSV path
-    file_path = os.getenv('COLLABORATOR_CSV_PATH', 'collaborator.csv')
-
-    if not os.path.exists(file_path):
+    file_path = os.getenv('COLLABORATOR_CSV_PATH')
+    if not file_path:
+        file_path = os.path.join(os.getcwd(), 'collaborator.csv')
+    
+    if not os.path.isfile(file_path):
         print(f"Error: CSV file not found at {file_path}")
         exit(1)
 

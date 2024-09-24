@@ -1,6 +1,6 @@
-name: IssueOps Request
+name: IssueOps
 description: Use this template for IssueOps commands to add users to repositories or organizations
-title: "[IssueOps] - Add User Request"
+title: " Add User Request"
 labels: [issueops]
 assignees: 
   - viswa9357
