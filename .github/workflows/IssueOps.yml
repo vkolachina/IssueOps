@@ -32,12 +32,15 @@ jobs:
       if: contains(github.event.comment.body, '/issueops add_repo')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        INVITATIONS_CSV_PATH: ${{ secrets.INVITATIONS_CSV_PATH }}
       run: python scripts/add_repo.py
 
     - name: Run add script
       if: contains(github.event.comment.body, '/issueops add')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH || 'default/path/to/collaborators.csv' }}
+        
       run: python scripts/add.py
 
     - name: Dump GitHub context
