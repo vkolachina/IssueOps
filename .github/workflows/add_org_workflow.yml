@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   process-add-org-command:
-    if: contains(github.event.comment.body, '/issueops add')
+    #if: contains(github.event.comment.body, '/issueops add')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -32,7 +32,7 @@ jobs:
       if: ${{ env.COLLABORATORS_CSV_PATH != '' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH }}
+        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH }}
       run: python scripts/add.py
 
     - name: Dump GitHub context
