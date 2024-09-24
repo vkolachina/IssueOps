@@ -1,6 +1,9 @@
 name: IssueOps
 
 on: 
+  push:
+    branches:
+      - main, Develop
   issue_comment:
     types: [created]
 
