@@ -1,18 +1,22 @@
 name: IssueOps Request
 title: "This is a sample body for IssueOps Request"
 labels: issueops
-assignees: 'viswa9357, KolachinaV'
+assignees: 
+  - viswa9357
+  - KolachinaV
 body:
   - type: markdown
-      ## IssueOps Request
+    attributes:
+      value: |
+        ## IssueOps Request
 
-      Please describe your request here. Do not add any commands in this description.
+        Please describe your request here. Do not add any commands in this description.
 
-      ---
+        ---
 
-      **Important:** After creating this issue, add a new comment with one of these commands:
+        **Important:** After creating this issue, add a new comment with one of these commands:
 
-      - `/issueops add_repo` : To add a repository collaborator
-      - `/issueops add` : To add an organization member
+        - `/issueops add_repo` : To add a repository collaborator
+        - `/issueops add` : To add an organization member
 
-      Make sure to use the exact command as a separate comment after the issue is created.
+        Make sure to use the exact command as a separate comment after the issue is created.
