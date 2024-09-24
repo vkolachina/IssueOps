@@ -1,6 +1,7 @@
 name: IssueOps
 
 on: 
+  push:
   issue_comment:
     types: [created]
 
