@@ -1,7 +1,6 @@
 name: IssueOps
 
 on: 
-  push:
   issue_comment:
     types: [created]
 
@@ -10,10 +9,8 @@ permissions:
   issues: write
   actions: write
 
-
 jobs:
   process-command:
-    #if: contains(github.event.comment.body, '/issueops')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -30,19 +27,30 @@ jobs:
         pip install requests python-dotenv
 
     - name: Run add_repo script
-      if: contains(github.event.comment.body, '/issueops add_repo')
+      if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add_repo')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INVITATIONS_CSV_PATH: ${{ secrets.INVITATIONS_CSV_PATH || 'default/path/to/invitations.csv' }}
-      run: python scripts/add_repo.py
+        INVITATIONS_CSV_PATH: ${{ github.workspace }}/invitations.csv
+      run: |
+        if [ -f "$INVITATIONS_CSV_PATH" ]; then
+          python scripts/add_repo.py
+        else
+          echo "Error: invitations.csv not found at $INVITATIONS_CSV_PATH"
+          exit 1
+        fi
 
     - name: Run add script
-      if: contains(github.event.comment.body, '/issueops add')
+      if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COLLABORATORS_CSV_PATH: ${{ secrets.COLLABORATORS_CSV_PATH || 'default/path/to/collaborators.csv' }}
-        
-      run: python scripts/add.py
+        COLLABORATORS_CSV_PATH: ${{ github.workspace }}/collaborators.csv
+      run: |
+        if [ -f "$COLLABORATORS_CSV_PATH" ]; then
+          python scripts/add.py
+        else
+          echo "Error: collaborators.csv not found at $COLLABORATORS_CSV_PATH"
+          exit 1
+        fi
 
     - name: Dump GitHub context
       env:
@@ -50,4 +58,5 @@ jobs:
       run: echo "$GITHUB_CONTEXT"
 
     - name: Debug Comment Body
+      if: github.event_name == 'issue_comment'
       run: echo "${{ github.event.comment.body }}"
