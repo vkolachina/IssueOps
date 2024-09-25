@@ -29,7 +29,7 @@ jobs:
     - name: Run add_repo script
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add_repo')
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use the PAT secret from repository settings
         INVITATIONS_CSV_PATH: ${{ github.workspace }}/invitations.csv
       run: |
         if [ -f "$INVITATIONS_CSV_PATH" ]; then
@@ -42,7 +42,7 @@ jobs:
     - name: Run add script
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add')
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use the PAT secret from repository settings
         COLLABORATORS_CSV_PATH: ${{ github.workspace }}/collaborator.csv
       run: |
         if [ -f "$COLLABORATORS_CSV_PATH" ]; then
