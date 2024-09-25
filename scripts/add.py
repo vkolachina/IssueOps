@@ -1,6 +1,10 @@
 import csv
 import requests
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 def get_user_id(username, token):
     url = f"https://api.github.com/users/{username}"
@@ -45,12 +49,12 @@ def process_github_data(file_path, token):
 
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
-        
+
         # Ensure headers match what we're expecting
         if 'type' not in reader.fieldnames or 'name' not in reader.fieldnames or 'username' not in reader.fieldnames or 'permission' not in reader.fieldnames:
             print("Error: CSV file headers are incorrect. Expected headers: 'type', 'name', 'username', 'permission'.")
             exit(1)
-        
+
         for row in reader:
             if row['type'] == 'organization':
                 organizations.append(row['name'])
@@ -76,14 +80,16 @@ def process_github_data(file_path, token):
 
 if __name__ == "__main__":
     # Get the token from environment variable
-    token = os.getenv('GITHUB_TOKEN')  # This will be passed from the GitHub Actions workflow
+    token = os.getenv('GITHUB_TOKEN')
     if not token:
         print("Error: GitHub token not found. Please set the GITHUB_TOKEN environment variable.")
         exit(1)
 
     # Set default CSV path
-    file_path = os.getenv('COLLABORATORS_CSV_PATH', 'collaborator.csv')
-    
+    file_path = os.getenv('COLLABORATOR_CSV_PATH')
+    if not file_path:
+        file_path = os.path.join(os.getcwd(), 'collaborator.csv')
+
     if not os.path.isfile(file_path):
         print(f"Error: CSV file not found at {file_path}")
         exit(1)
