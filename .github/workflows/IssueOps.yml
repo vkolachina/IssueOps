@@ -26,6 +26,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests python-dotenv
 
+    - name: Debug file locations
+      run: |
+        ls -l $INVITATIONS_CSV_PATH
+        ls -l $COLLABORATORS_CSV_PATH
+
     - name: Run add_repo script
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add_repo')
       env:
