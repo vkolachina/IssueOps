@@ -82,7 +82,7 @@ if __name__ == "__main__":
         exit(1)
 
     # Set default CSV path
-    file_path = os.getenv('COLLABORATORS_CSV_PATH', os.path.join(os.path.dirname(__file__), '..', 'data', 'collaborators.csv'))
+    file_path = os.getenv('COLLABORATORS_CSV_PATH', os.path.join(os.path.dirname(__file__), '..', 'data', 'collaborator.csv'))
     
     if not os.path.isfile(file_path):
         print(f"Error: CSV file not found at {file_path}")
