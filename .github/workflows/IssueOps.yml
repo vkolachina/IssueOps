@@ -39,7 +39,7 @@ jobs:
       if: contains(github.event.comment.body, '/issueops add_repo')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INVITATIONS_CSV_PATH: ${{ github.workspace }}/scripts/invitations.csv
+        INVITATIONS_CSV_PATH: ${{ github.workspace }}/data/invitations.csv
       run: |
         echo "INVITATIONS_CSV_PATH: $INVITATIONS_CSV_PATH"
         if [ -f "$INVITATIONS_CSV_PATH" ]; then
@@ -55,7 +55,7 @@ jobs:
       if: contains(github.event.comment.body, '/issueops add')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COLLABORATORS_CSV_PATH: ${{ github.workspace }}/scripts/collaborator.csv
+        COLLABORATORS_CSV_PATH: ${{ github.workspace }}/data/collaborator.csv
       run: |
         echo "COLLABORATORS_CSV_PATH: $COLLABORATORS_CSV_PATH"
         if [ -f "$COLLABORATORS_CSV_PATH" ]; then
