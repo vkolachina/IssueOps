@@ -8,6 +8,7 @@ permissions:
   contents: write
   issues: read
   actions: write
+  pull-requests: write
 
 jobs:
   process-command:
@@ -26,11 +27,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests python-dotenv
 
-    # Step for the 'add_repo' command
     - name: Run add_repo script
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add_repo')
       env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         INVITATIONS_CSV_PATH: ${{ github.workspace }}/invitations.csv
       run: |
         if [ -f "$INVITATIONS_CSV_PATH" ]; then
@@ -40,11 +40,10 @@ jobs:
           exit 1
         fi
 
-    # Step for the 'add' command
     - name: Run add script
       if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '/issueops add')
       env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COLLABORATORS_CSV_PATH: ${{ github.workspace }}/collaborator.csv
       run: |
         if [ -f "$COLLABORATORS_CSV_PATH" ]; then
@@ -54,13 +53,11 @@ jobs:
           exit 1
         fi
 
-    # Debugging: Dump GitHub context to check the event payload
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
 
-    # Debugging: Output the comment body to verify it's received correctly
     - name: Debug Comment Body
       if: github.event_name == 'issue_comment'
       run: echo "${{ github.event.comment.body }}"
